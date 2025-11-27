@@ -2,7 +2,7 @@ AI Document Platform
 
 A Flask-based web application that allows users to generate, edit, and export documents (DOCX) and presentations (PPTX) with AI-assisted content generation.
 
-📸 Screenshots
+Screenshots
 
 1. Login Screen
 
@@ -16,7 +16,7 @@ Define your project title, document type, and outline structure.
 
 Edit section content, generate text with AI, and refine drafts before exporting.
 
-🚀 Features
+Features
 
 User Authentication: Secure registration and login functionality.
 
@@ -32,7 +32,7 @@ Export projects as PowerPoint Presentations (.pptx).
 
 Database: robust data persistence using MySQL and SQLAlchemy.
 
-🛠️ Tech Stack
+Tech Stack
 
 Backend: Python, Flask
 
@@ -44,7 +44,7 @@ Document Processing: python-docx, python-pptx
 
 Security: bcrypt for password hashing, flask-cors for cross-origin requests.
 
-⚙️ Installation & Setup
+Installation & Setup
 
 Prerequisites
 
@@ -89,7 +89,7 @@ python app.py
 
 The server will start on http://127.0.0.1:5000.
 
-🏃‍♂️ Usage Guide
+Usage Guide
 
 Open the App: Navigate to http://127.0.0.1:5000/ in your browser.
 
@@ -101,7 +101,7 @@ Edit: Use the "Generate" button to populate sections with AI text (mocked) or "R
 
 Export: Click "Download DOCX" or "Download PPTX" to save your work locally.
 
-📂 Project Structure
+Project Structure
 
 /
 ├── backend/
@@ -111,3 +111,4 @@ Export: Click "Download DOCX" or "Download PPTX" to save your work locally.
 │   ├── routes/             # (Blueprints for Auth, AI, Project, Export)
 │   └── templates/          # HTML Files (Frontend)
 └── README.md
+/
