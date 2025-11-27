@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .dashboard-box {
+            background: white;
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 28px;
+        }
+
+        button {
+            padding: 14px 20px;
+            border: none;
+            background: #3b82f6;
+            color: white;
+            font-size: 17px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.25s;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-box">
+    <h2>Dashboard</h2>
+    <button onclick="newProject()">Create New Project</button>
+</div>
+
+<script>
+function newProject() {
+    window.location = "new_project.html";
+}
+</script>
+
+</body>
+</html>

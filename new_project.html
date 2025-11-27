@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Project</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #4f46e5, #3b82f6);
+            font-family: Arial, sans-serif;
+        }
+
+        .box {
+            width: 450px;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.25s;
+            background: #f8f9fa;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 6px rgba(59,130,246,0.4);
+        }
+
+        textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #3b82f6;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h3>New Project</h3>
+
+    <input id="title" placeholder="Project Title">
+
+    <select id="type">
+        <option value="docx">DOCX</option>
+        <option value="pptx">PPTX</option>
+    </select>
+
+    <textarea id="topic" placeholder="Main Topic"></textarea>
+
+    <input id="sections" placeholder="Section titles (comma separated)">
+
+    <button onclick="create()">Create</button>
+</div>
+
+<script>
+function create() {
+    fetch("http://127.0.0.1:5000/create_project", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            user_id: localStorage.getItem("user_id"),
+            title: document.getElementById("title").value.trim(),
+            doc_type: document.getElementById("type").value,
+            main_topic: document.getElementById("topic").value.trim(),
+            sections: document.getElementById("sections").value.split(",").map(s => s.trim())
+        })
+    })
+    .then(r => r.json())
+    .then(d => {
+        if (d.project_id && d.project_id !== "undefined") {
+            window.location = "editor.html?pid=" + d.project_id;
+        } else {
+            alert("❌ Error creating project:\n" + (d.error || "Unknown error occurred."));
+        }
+    })
+    .catch(err => {
+        alert("❌ Network Error: " + err.message);
+    });
+}
+</script>
+
+</body>
+</html>

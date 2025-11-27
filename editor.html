@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editor</title>
+
+    <!-- ⭐ BEAUTIFUL UI CSS ⭐ -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #4f46e5, #3b82f6);
+            min-height: 100vh;
+            padding-top: 30px;
+            color: #fff;
+        }
+
+        .main-container {
+            width: 90%;
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.25);
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 28px;
+            color: #222;
+        }
+
+        .section-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.07);
+        }
+
+        h3 {
+            margin-top: 0;
+            font-size: 22px;
+            color: #111827;
+        }
+
+        textarea {
+            width: 100%;
+            height: 130px;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            resize: vertical;
+            background: white;
+            transition: 0.25s;
+        }
+
+        textarea:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 6px rgba(59,130,246,.3);
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            transition: .25s;
+        }
+
+        input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 6px rgba(99,102,241,0.3);
+        }
+
+        button {
+            margin-top: 10px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        .download-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .download-btn {
+            background: #10b981;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 0 10px;
+            font-size: 16px;
+            transition: 0.25s;
+        }
+
+        .download-btn:hover {
+            background: #059669;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="main-container">
+    <h2>Project Editor</h2>
+
+    <div id="container"></div>
+
+    <div class="download-links">
+        <a href="#" class="download-btn" onclick="downloadDocx()">Download DOCX</a>
+        <a href="#" class="download-btn" onclick="downloadPptx()">Download PPTX</a>
+    </div>
+</div>
+
+
+<!-- ⭐ SCRIPT BELOW ⭐ -->
+<script>
+let pid = new URLSearchParams(window.location.search).get("pid");
+
+// VALIDATION FIX
+if (!pid || pid === "undefined" || pid === "null") {
+    alert("❌ Error: No valid project selected.\nReturning to dashboard.");
+    window.location = "index.html";
+    throw new Error("Invalid PID");
+}
+
+// LOAD SECTIONS
+fetch(`http://127.0.0.1:5000/get_project/${pid}`)
+.then(r => r.json())
+.then(sections => {
+    let html = "";
+    sections.forEach(sec => {
+        html += `
+            <div class="section-card">
+                <h3>${sec.title}</h3>
+                <textarea id="content_${sec.id}">${sec.content}</textarea>
+                <input id="ref_${sec.id}" placeholder="Refinement prompt">
+                <button onclick="refine(${sec.id})">Refine</button>
+            </div>
+        `;
+    });
+    document.getElementById("container").innerHTML = html;
+});
+
+// REFINE
+function refine(id){
+    fetch("http://127.0.0.1:5000/refine", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            section_id:id,
+            prompt:document.getElementById("ref_"+id).value
+        })
+    }).then(r=>r.json()).then(d=>{
+        document.getElementById("content_"+id).value = d.content;
+    });
+}
+
+// EXPORT DOCX
+function downloadDocx() {
+    if (!pid || pid === "undefined") {
+        alert("❌ Cannot export DOCX: Invalid Project ID");
+        return;
+    }
+    window.location = `http://127.0.0.1:5000/export/docx/${pid}`;
+}
+
+// EXPORT PPTX
+function downloadPptx() {
+    if (!pid || pid === "undefined") {
+        alert("❌ Cannot export PPTX: Invalid Project ID");
+        return;
+    }
+    window.location = `http://127.0.0.1:5000/export/pptx/${pid}`;
+}
+</script>
+
+</body>
+</html>
