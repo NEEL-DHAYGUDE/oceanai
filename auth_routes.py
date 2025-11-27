@@ -22,9 +22,17 @@ def register():
 @auth_bp.post("/login")
 def login():
     data = request.json
+    user = User.query.filter_by(email=data["email"]).first()
 
-    # 🔥 FIXED LOGIN FOR DEVELOPMENT
-    if data["email"] == "user" and data["password"] == "123":
-        return jsonify({"message": "Login successful", "user_id": 1})
+    if not user:
+        return jsonify({"message": "Invalid credentials"}), 401
+
+    # FIX: user.password is already bytes → DO NOT encode again
+    if bcrypt.checkpw(data["password"].encode(), user.password):
+        return jsonify({
+            "message": "Login successful",
+            "user_id": user.id
+        })
 
     return jsonify({"message": "Invalid credentials"}), 401
+
