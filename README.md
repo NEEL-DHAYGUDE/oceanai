@@ -6,15 +6,17 @@ A Flask-based web application that allows users to generate, edit, and export do
 
 1. **Login Screen**
 
-Secure user authentication using Bcrypt.
+<img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/86af78a5-3e00-482f-9cf8-495d4936c370" />
+
 
 2. **Create New Project**
 
-Define your project title, document type, and outline structure.
+<img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/e8891ca0-a110-4826-b703-0a7460b0c369" />
+
 
 3. **Editor & AI Refinement**
 
-Edit section content, generate text with AI, and refine drafts before exporting.
+<img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/dec39878-a9b5-4705-90af-5176ef0971cb" />
 
 ## Features
 
